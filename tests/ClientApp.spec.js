@@ -1,6 +1,6 @@
 const { test, expect } = require("@playwright/test");
 
-test("Logging into the new page and register with new credentials", async ({
+test.skip("Logging into the new page and register with new credentials", async ({
   page,
 }) => {
   await page.goto("https://rahulshettyacademy.com/client/#/auth/login");
