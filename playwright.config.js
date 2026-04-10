@@ -27,7 +27,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   timeout: 40 * 1000,
   expect: {
-    timeout: 15000,
+    timeout: 5000,
   },
   use: {
     browserName: 'firefox',
