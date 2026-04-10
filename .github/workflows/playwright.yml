@@ -14,13 +14,13 @@ jobs:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
-        node-version: 22
+        node-version: 24
     - name: Install dependencies
       run: npm ci
     - name: Install Chrome Browsers
       run: npx playwright install chromium --with-deps
     - name: Run Playwright tests (Headed with Xvfb)
-      run: xvfb-run --auto-servernum npx playwright test --workers=1 --trace=on
+      run: npx playwright test --project=chromium --workers=1 --trace=on
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:

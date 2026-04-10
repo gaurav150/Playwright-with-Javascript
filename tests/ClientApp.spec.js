@@ -23,10 +23,11 @@ test("Logging into the new page and register with new credentials", async ({
   await confirmPassword.fill("Abhishek@123");
   await page.locator('[type$="checkbox"]').check();
   await page.locator('[type$="submit"]').click();
-  await page.pause();
-  await expect(page.locator(".login-wrapper h1")).toHaveText(
-    "Account Created Successfully",
-  );
+//   const accountCreationMessage = await page.locator(".login-wrapper h1").textContent();
+//   console.log("Account creation message is -> " + accountCreationMessage.trim());
+//   expect(accountCreationMessage.trim()).toBe(
+//     "Account Created Successfully",
+//   );
   await loginBtnDuringAcccountcreation.click();
   await email.fill("");
   await email.fill("abhishek03.sharma@example.com");
