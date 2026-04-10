@@ -40,7 +40,7 @@ test("Logging into the new page and register with new credentials", async ({
   // await expect(page.locator('.toast-message')).toHaveText('Registration successful');
 });
 
-test.only("Logging in with existing credentials", async ({ page }) => {
+test("Logging in with existing credentials", async ({ page }) => {
   await page.goto("https://rahulshettyacademy.com/client/");
   console.log(await page.title());
   const email = page.locator("#userEmail");
