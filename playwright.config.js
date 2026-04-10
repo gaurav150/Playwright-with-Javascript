@@ -39,6 +39,14 @@ export default defineConfig({
     trace: 'on-first-retry',
     headless: true,
   },
+  projects: [
+    {
+      name: 'chromium',
+      use: {
+        browserName: 'chromium',
+      },
+    },
+  ],
 
   
     /* Test against mobile viewports. */
