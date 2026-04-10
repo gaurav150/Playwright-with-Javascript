@@ -30,7 +30,7 @@ export default defineConfig({
     timeout: 5000,
   },
   use: {
-    browserName: 'firefox',
+    browserName: 'chromium',
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
 
