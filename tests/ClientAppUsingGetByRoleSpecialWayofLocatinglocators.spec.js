@@ -26,12 +26,6 @@ test.only("Logging in with existing credentials using GetByRole", async ({ page 
   console.log("count is -> " + count);
   await products.filter({hasText: productName})
   .getByRole("button", {name: "Add To Cart"}).click();
-//   for (let i = 0; i < count; ++i) {
-//     if ((await products.nth(i).locator("b").textContent()) === productName) {
-//       await products.nth(i).locator("text= Add To Cart").click();
-//       break;
-//     }
-//   }
   await cartButton.click();
   await page.locator("div li").first().waitFor();
   await expect(page.getByText(productName)).toBeVisible();
@@ -50,7 +44,7 @@ test.only("Logging in with existing credentials using GetByRole", async ({ page 
   await page.locator(".actions a.btnn").click();
   const headerText = await page.locator("h1").textContent();
   console.log("Header text is -> " + headerText.trim());
-  expect(headerText.trim()).toBe("Thankyou for the order.");
+  expect(page.getByText("Thankyou for the order.")).toBeVisible();
   const rawOrderId = await page
     .locator(".em-spacer-1 .ng-star-inserted")
     .textContent();
