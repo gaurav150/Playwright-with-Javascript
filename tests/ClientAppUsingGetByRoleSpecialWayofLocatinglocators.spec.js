@@ -1,7 +1,7 @@
 const { test, expect } = require("@playwright/test");
 
 
-test.only("Logging in with existing credentials using GetByRole", async ({ page }) => {
+test("Logging in with existing credentials using GetByRole", async ({ page }) => {
   await page.goto("https://rahulshettyacademy.com/client/");
   console.log(await page.title());
   const emailIdValue = "abhishek03.sharma@example.com";
