@@ -1,6 +1,6 @@
 const {test, expect} = require("@playwright/test");
 
-test.only("Popup Validations", async ({page}) => {
+test("Popup Validations", async ({page}) => {
     await page.goto("https://www.rahulshettyacademy.com/AutomationPractice/");
     // await page.goto("http://google.com/");
     // await page.goBack(); // to go back to the previous page
