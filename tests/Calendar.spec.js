@@ -1,6 +1,6 @@
 const {test, expect} = require("@playwright/test");
 
-test.only('Calendar Validation Test', async ({page}) => {
+test('Calendar Validation Test', async ({page}) => {
     await page.goto("https://rahulshettyacademy.com/seleniumPractise/#/offers");
     const monthNumber = "5"; // June (0-based index)
     const year = "2024";
