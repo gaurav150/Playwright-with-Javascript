@@ -1,17 +1,20 @@
 const { test, expect } = require("@playwright/test");
 
-
-test("Logging in with existing credentials using GetByRole", async ({ page }) => {
+test("Logging in with existing credentials using GetByRole", async ({
+  page,
+}) => {
   await page.goto("https://rahulshettyacademy.com/client/");
   console.log(await page.title());
   const emailIdValue = "abhishek03.sharma@example.com";
   const passwordValue = "Abhishek@123";
   const email = page.getByPlaceholder("email@example.com");
   const password = page.getByPlaceholder("enter your passsword");
-  const loginBtn = page.getByRole("button", {name: "Login"});
+  const loginBtn = page.getByRole("button", { name: "Login" });
   const products = page.locator(".card-body");
   const productName = "ZARA COAT 3";
-  const cartButton = page.getByRole("listitem").getByRole("button", {name: "Cart"});
+  const cartButton = page
+    .getByRole("listitem")
+    .getByRole("button", { name: "Cart" });
   const monthDropdown = page.locator("select.ddl").nth(0);
   const dateDropdown = page.locator("select.ddl").nth(1);
   await email.fill(emailIdValue);
@@ -24,8 +27,10 @@ test("Logging in with existing credentials using GetByRole", async ({ page }) =>
   console.log(allTitles);
   const count = await products.count();
   console.log("count is -> " + count);
-  await products.filter({hasText: productName})
-  .getByRole("button", {name: "Add To Cart"}).click();
+  await products
+    .filter({ hasText: productName })
+    .getByRole("button", { name: "Add To Cart" })
+    .click();
   await cartButton.click();
   await page.locator("div li").first().waitFor();
   await expect(page.getByText(productName)).toBeVisible();
@@ -37,7 +42,7 @@ test("Logging in with existing credentials using GetByRole", async ({ page }) =>
   await options.waitFor();
   const countryOptions = await options.locator("button").allTextContents();
   console.log(countryOptions);
-  await page.getByRole("button", {name: "India"}).nth(1).click();
+  await page.getByRole("button", { name: "India" }).nth(1).click();
   const userEmail = await page.locator(".user__name label").textContent();
   console.log("Email is -> " + userEmail.trim());
   expect(userEmail).toBe(emailIdValue);
