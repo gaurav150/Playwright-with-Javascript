@@ -5,6 +5,9 @@ test("Browser context first PlayWright test", async ({ browser }) => {
   // chrome - plugins/cookies
   const context = await browser.newContext();
   const page = await context.newPage();
+  // await page.route("**/*.css", route => route.abort()); // to block the css files
+  page.on("request", request => console.log(request.url())); // to log the url of the request
+  page.on("response", response => console.log(response.url() + " -> " + response.status())); // to log the url and status of the response
   await page.goto("https://www.rahulshettyacademy.com/loginpagePractise/");
   console.log(await page.title());
   await expect(page).toHaveTitle("LoginPage Practise | Rahul Shetty Academy");
