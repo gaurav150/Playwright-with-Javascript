@@ -7,10 +7,9 @@ const loginPayLoad = {
 const orderPayLoad = {
   orders: [{ country: "India", productOrderedId: "6960eac0c941646b7a8b3e68" }],
 };
-
 let response = {};
-// beforeAll runs once per file: APIutils.createOrder() logs in (getToken) then creates an order;
-// response holds { token, orderId } for injecting auth and matching the My Orders row.
+// beforeAll runs once per file: build API request context, log in, create an order via APIutils.
+// createOrder() calls getToken() then POST /order/create-order; result has { token, orderId } for tests.
 test.beforeAll(async () => {
   const apiContext = await request.newContext();
   const apiUtils = new APIutils(apiContext, loginPayLoad);
@@ -20,7 +19,7 @@ test.beforeAll(async () => {
   console.log("Login response token is -> " + response.token);
 });
 
-test("@API Place the order", async ({ page }) => {
+test("Security test request interception", async ({ page }) => {
   await page.goto("https://rahulshettyacademy.com/client/");
   console.log(await page.title());
 
@@ -30,18 +29,19 @@ test("@API Place the order", async ({ page }) => {
 
   await page.goto("https://rahulshettyacademy.com/client/");
 
+  page.route(
+    "https://rahulshettyacademy.com/api/ecom/order/get-orders-details?id=*",
+    async (route) => {
+      // Intercept the real API call and continue with a rewritten URL (different order id).
+      // The server still responds; this is not route.fulfill() with a fake body.
+      await route.continue({
+        url: "https://rahulshettyacademy.com/api/ecom/order/get-orders-details?id=69e0ea83f86ba51a656b6fc2",
+      });
+    },
+  );
   await page.locator("button[routerlink*='myorders']").click();
-  await page.locator("tbody").waitFor();
-  const rows = page.locator("tbody tr");
+  await page.getByRole("button", { name: "View" }).first().click();
 
-  for (let i = 0; i < (await rows.count()); ++i) {
-    const rowOrderId = await rows.nth(i).locator("th").textContent();
-    console.log("row order id is -> " + rowOrderId);
-    if (response.orderId.includes(rowOrderId)) {
-      await rows.nth(i).locator("button").first().click();
-      break;
-    }
-  }
-  const orderIdDetails = await page.locator(".col-text").textContent();
-  expect(response.orderId.includes(orderIdDetails)).toBeTruthy();
+  await expect(page.locator(".blink_me")).toHaveText("You are not authorize to view this order");
+
 });
