@@ -20,3 +20,20 @@ test("Popup Validations", async ({ page }) => {
   console.log("Text is -> " + text);
   console.log(text.split(" ")[1].trim());
 });
+
+test("Screenshot and Visuals Comparison", async ({ page }) => {
+  await page.goto("https://www.rahulshettyacademy.com/AutomationPractice/");
+  await expect(page.locator("#displayed-text")).toBeVisible();
+  await page.locator("#displayed-text").screenshot({ path: "element.png" }); // to take a screenshot of the element
+  await page.locator("#hide-textbox").click();
+  await page.screenshot({ path: "screenshot.png", fullPage: true }); // to take a screenshot of the page
+  await expect(page.locator("#displayed-text")).toBeHidden();
+});
+
+test("Visual Comparison", async ({ page }) => {
+  await page.goto("https://www.flightaware.com/", {
+    waitUntil: "domcontentloaded",
+  });
+  await page.screenshot({ path: "flightaware.png", fullPage: true }); // to take a screenshot of the page
+  expect(await page.screenshot()).toMatchSnapshot("flightaware.png"); // to compare the screenshot with the baseline image
+});
