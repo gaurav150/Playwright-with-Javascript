@@ -42,6 +42,7 @@ test("Security test request interception", async ({ page }) => {
   await page.locator("button[routerlink*='myorders']").click();
   await page.getByRole("button", { name: "View" }).first().click();
 
-  await expect(page.locator(".blink_me")).toHaveText("You are not authorize to view this order");
-
+  await expect(page.locator(".blink_me")).toHaveText(
+    "You are not authorize to view this order",
+  );
 });
