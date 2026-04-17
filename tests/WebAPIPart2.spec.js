@@ -1,5 +1,5 @@
 const { test, expect, request } = require("@playwright/test");
-const { APIutils } = require("./utils/APIutils");
+const { APIutils } = require("../utils/APIutils");
 let webContext;
 test.beforeAll(async ({ browser }) => {
   const context = await browser.newContext();
