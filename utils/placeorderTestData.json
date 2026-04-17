@@ -1,0 +1,17 @@
+[
+    {
+    "username":"abhishek03.sharma@example.com",
+    "password":"Abhishek@123",
+    "productName":"ZARA COAT 3"
+},
+{
+    "username":"abhishek02.sharma@example.com",
+    "password":"Abhishek@123",
+    "productName":"ADIDAS ORIGINAL"
+},
+{
+    "username":"abhishek01.sharma@example.com",
+    "password":"Abhishek@123",
+    "productName":"iphone 13 pro"
+}
+]
