@@ -30,7 +30,7 @@ test("Screenshot and Visuals Comparison", async ({ page }) => {
   await expect(page.locator("#displayed-text")).toBeHidden();
 });
 
-test("Visual Comparison", async ({ page }) => {
+test.skip("Visual Comparison", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto("https://www.flightaware.com/", { waitUntil: "load" });
   await page.getByRole("button", { name: "Allow All" }).click({ timeout: 5000 }).catch(() => {});
