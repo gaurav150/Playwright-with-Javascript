@@ -20,7 +20,7 @@ jobs:
     - name: Install Chrome Browsers
       run: npx playwright install chromium --with-deps
     - name: Run Playwright tests (Headed with Xvfb)
-      run: npx playwright test --project=chromium --workers=1 --trace=on
+      run: npx playwright test --project=chromium --workers=3 --trace=on
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
