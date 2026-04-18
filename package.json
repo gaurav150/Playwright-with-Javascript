@@ -6,7 +6,9 @@
   "scripts": {
     "test": "npx playwright test tests/WebAPIPart1.spec.js  --headed",
     "test:ci": "npx playwright test",
-    "test:all": "npx playwright test"
+    "test:all": "npx playwright test",
+    "cucumber": "cucumber-js",
+    "cucumber:dry": "cucumber-js --dry-run"
   },
   "keywords": [],
   "author": "",

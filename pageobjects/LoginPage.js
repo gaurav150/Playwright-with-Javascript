@@ -14,7 +14,10 @@ class LoginPage {
     await this.emailField.fill(email);
     await this.passwordField.fill(password);
     await this.signInButton.click();
-    await this.page.waitForLoadState("networkidle"); // Wait for the page to load completely
+    // Avoid networkidle (SPAs often never go idle); wait for post-login UI.
+    await this.page
+      .getByRole("button", { name: "Sign Out" })
+      .waitFor({ state: "visible", timeout: 60_000 });
   }
 }
 module.exports = { LoginPage };
