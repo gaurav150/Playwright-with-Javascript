@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from "@playwright/test";
 
 /**
  * Read environment variables from file.
@@ -14,30 +14,31 @@ import { defineConfig, devices } from '@playwright/test';
  */
 
 // `viewport: null` cannot be combined with `deviceScaleFactor` from device presets (Playwright throws).
-const { deviceScaleFactor: _omit, ...desktopChrome } = devices['Desktop Chrome'];
+const { deviceScaleFactor: _omit, ...desktopChrome } =
+  devices["Desktop Chrome"];
 
 /** @type {import('@playwright/test').Project} */
 const chromiumDesktop = {
-  name: 'chromium',
+  name: "chromium",
   use: {
     ...desktopChrome,
-    trace: 'retain-on-failure',
+    trace: "retain-on-failure",
     headless: true,
     viewport: null,
     /** @type {'on'} */
-    screenshot: 'on',
+    screenshot: "on",
     launchOptions: {
-      args: ['--start-maximized'],
+      args: ["--start-maximized"],
     },
   },
 };
 
 /** Set ALL_BROWSERS=1 (or true) to also run firefox and webkit. Default is chromium only. */
 const runAllBrowsers =
-  process.env.ALL_BROWSERS === '1' || process.env.ALL_BROWSERS === 'true';
+  process.env.ALL_BROWSERS === "1" || process.env.ALL_BROWSERS === "true";
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -49,27 +50,27 @@ export default defineConfig({
   /* Reporter: HTML always; JUnit on CI for Jenkins / other orchestrators */
   reporter: process.env.CI
     ? [
-        ['html', { open: 'never' }],
-        ['junit', { outputFile: 'test-results/junit.xml' }],
+        ["html", { open: "never" }],
+        ["junit", { outputFile: "test-results/junit.xml" }],
       ]
-    : 'html',
+    : "html",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   timeout: 40 * 1000,
   expect: {
     timeout: 5000,
   },
-  
+
   /* Default: chromium only. ALL_BROWSERS=1 adds firefox + webkit. */
   projects: runAllBrowsers
     ? [
         chromiumDesktop,
         {
-          name: 'firefox',
-          use: { ...devices['Desktop Firefox'] },
+          name: "firefox",
+          use: { ...devices["Desktop Firefox"] },
         },
         {
-          name: 'webkit',
-          use: { ...devices['Desktop Safari'] },
+          name: "webkit",
+          use: { ...devices["Desktop Safari"] },
         },
       ]
     : [chromiumDesktop],
@@ -81,4 +82,3 @@ export default defineConfig({
   //   reuseExistingServer: !process.env.CI,
   // },
 });
-

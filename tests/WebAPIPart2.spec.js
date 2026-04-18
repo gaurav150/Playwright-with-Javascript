@@ -51,7 +51,9 @@ test("Logging in with existing credentials", async () => {
   await page
     .locator("input[placeholder='Select Country']")
     .pressSequentially("ind", { delay: 50 });
-  const indiaOption = page.locator(".ta-results button", { hasText: "India" }).first();
+  const indiaOption = page
+    .locator(".ta-results button", { hasText: "India" })
+    .first();
   await expect(indiaOption).toBeVisible({ timeout: 20_000 });
   await indiaOption.click();
   const userEmail = await page.locator(".user__name label").textContent();

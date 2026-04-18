@@ -33,7 +33,10 @@ test("Screenshot and Visuals Comparison", async ({ page }) => {
 test.skip("Visual Comparison", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto("https://www.flightaware.com/", { waitUntil: "load" });
-  await page.getByRole("button", { name: "Allow All" }).click({ timeout: 5000 }).catch(() => {});
+  await page
+    .getByRole("button", { name: "Allow All" })
+    .click({ timeout: 5000 })
+    .catch(() => {});
   await page.locator("main").waitFor({ state: "visible" });
   // External sites keep loading images/tiles; fullPage height changes between stabilization shots → instability.
   // Viewport-only + mask the live map keeps dimensions and pixels stable enough for toHaveScreenshot.

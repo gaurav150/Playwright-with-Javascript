@@ -1,4 +1,9 @@
-const { Before, After, setDefaultTimeout, AfterStep } = require("@cucumber/cucumber");
+const {
+  Before,
+  After,
+  setDefaultTimeout,
+  AfterStep,
+} = require("@cucumber/cucumber");
 // Load World first so setWorldConstructor runs before step definitions
 require("./world");
 

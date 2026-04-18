@@ -5,6 +5,6 @@ exports.customTest = test.extend({
   testDataForOrder: {
     username: "abhishek03.sharma@example.com",
     password: "Abhishek@123",
-    productName: "ZARA COAT 3"
-  }
+    productName: "ZARA COAT 3",
+  },
 });

@@ -66,12 +66,17 @@ test("Logging in with existing credentials", async ({ page }) => {
   for (let i = 0; i < count; ++i) {
     const title = (await products.nth(i).locator("b").textContent()) ?? "";
     if (title.trim() === productName) {
-      await products.nth(i).getByRole("button", { name: "Add To Cart" }).click();
+      await products
+        .nth(i)
+        .getByRole("button", { name: "Add To Cart" })
+        .click();
       addedToCart = true;
       break;
     }
   }
-  expect(addedToCart, `Product "${productName}" not found on shop page`).toBe(true);
+  expect(addedToCart, `Product "${productName}" not found on shop page`).toBe(
+    true,
+  );
   await cartButton.click();
   // Wait for cart line item — not generic div li (nav/cart-empty layouts break that selector).
   await expect(page.locator("h3", { hasText: productName })).toBeVisible({
@@ -83,7 +88,9 @@ test("Logging in with existing credentials", async ({ page }) => {
   await page
     .locator("input[placeholder='Select Country']")
     .pressSequentially("ind", { delay: 50 });
-  const indiaOption = page.locator(".ta-results button", { hasText: "India" }).first();
+  const indiaOption = page
+    .locator(".ta-results button", { hasText: "India" })
+    .first();
   await expect(indiaOption).toBeVisible({ timeout: 20_000 });
   await indiaOption.click();
   const userEmail = await page.locator(".user__name label").textContent();

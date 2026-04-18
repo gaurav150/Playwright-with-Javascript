@@ -17,6 +17,8 @@ Then(
     await dashboardPage.navigateToOrders();
     const ordersHistoryPage = this.poManager.getOrdersHistoryPage();
     await ordersHistoryPage.searchOrderAndSelect(this.orderId);
-    expect(this.orderId.includes(await ordersHistoryPage.getOrderId())).toBeTruthy();
+    expect(
+      this.orderId.includes(await ordersHistoryPage.getOrderId()),
+    ).toBeTruthy();
   },
 );
