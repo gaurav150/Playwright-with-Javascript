@@ -22,3 +22,7 @@ Then(
     ).toBeTruthy();
   },
 );
+
+Then('the user verifies that the error message {string} is displayed', async function (errorMessage) {
+          
+         });
