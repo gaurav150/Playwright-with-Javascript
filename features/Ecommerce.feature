@@ -1,7 +1,5 @@
 Feature: Ecommerce validations
 
-
-
     Scenario: Placing the order
         Given the user has been logged in to the Ecommerce website with "abhishek03.sharma@example.com" and "Abhishek@123"
         When the user adds "ZARA COAT 3" to the Cart
