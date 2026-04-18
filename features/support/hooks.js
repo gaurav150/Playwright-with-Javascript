@@ -1,4 +1,4 @@
-const { Before, After, setDefaultTimeout } = require("@cucumber/cucumber");
+const { Before, After, setDefaultTimeout, AfterStep } = require("@cucumber/cucumber");
 // Load World first so setWorldConstructor runs before step definitions
 require("./world");
 
@@ -13,4 +13,10 @@ Before({ timeout: browserTimeout }, async function () {
 
 After(async function () {
   await this.stopBrowser();
+});
+
+AfterStep(async function ({ result }) {
+  if (result.status === "FAILED") {
+    await this.takeScreenshot();
+  }
 });
