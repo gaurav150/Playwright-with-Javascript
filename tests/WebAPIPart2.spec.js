@@ -1,5 +1,5 @@
-const { test, expect, request } = require("@playwright/test");
-const { APIutils } = require("../utils/APIutils");
+const { test, expect } = require("@playwright/test");
+
 let webContext;
 test.beforeAll(async ({ browser }) => {
   const context = await browser.newContext();
@@ -13,8 +13,11 @@ test.beforeAll(async ({ browser }) => {
   await password.fill("");
   await password.fill("Abhishek@123");
   await loginBtn.click();
-  await page.waitForLoadState("networkidle"); // Wait for the page to load completely
+  // Avoid networkidle — SPAs often never go idle; wait for authenticated UI instead.
+  await expect(page.getByRole("button", { name: "Sign Out" })).toBeVisible();
+  await expect(page.locator(".card-body").first()).toBeVisible();
   await context.storageState({ path: "state.json" });
+  await context.close();
   webContext = await browser.newContext({ storageState: "state.json" });
 });
 
@@ -47,22 +50,13 @@ test("Logging in with existing credentials", async () => {
   await dateDropdown.selectOption("20");
   await page
     .locator("input[placeholder='Select Country']")
-    .pressSequentially("ind");
-  const options = page.locator(".ta-results");
-  await options.waitFor();
-  const countryOptions = await options.locator("button").allTextContents();
-  console.log(countryOptions);
-  const optionCount = await options.locator("button").count();
-  for (let i = 0; i < optionCount; ++i) {
-    const text = await options.locator("button").nth(i).textContent();
-    if (text.trim() === "India") {
-      await options.locator("button").nth(i).click();
-      break;
-    }
-  }
+    .pressSequentially("ind", { delay: 50 });
+  const indiaOption = page.locator(".ta-results button", { hasText: "India" }).first();
+  await expect(indiaOption).toBeVisible({ timeout: 20_000 });
+  await indiaOption.click();
   const userEmail = await page.locator(".user__name label").textContent();
   console.log("Email is -> " + userEmail.trim());
-  expect(userEmail).toBe("abhishek03.sharma@example.com");
+  expect(userEmail.trim()).toBe("abhishek03.sharma@example.com");
   await page.locator(".actions a.btnn").click();
   const headerText = await page.locator("h1").textContent();
   console.log("Header text is -> " + headerText.trim());
@@ -74,7 +68,7 @@ test("Logging in with existing credentials", async () => {
   console.log("Order ID is -> " + cleanedOrderId);
 
   await page.locator("button[routerlink*='myorders']").click();
-  await page.locator("tbody").waitFor();
+  await expect(page.locator("tbody")).toBeVisible({ timeout: 20_000 });
   const rows = page.locator("tbody tr");
 
   for (let i = 0; i < (await rows.count()); ++i) {

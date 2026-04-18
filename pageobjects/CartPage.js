@@ -1,8 +1,7 @@
-const { test, expect } = require("@playwright/test");
+const { expect } = require("@playwright/test");
 class CartPage {
   constructor(page) {
     this.page = page;
-    this.cartProducts = page.locator("div li").first();
     this.productsText = page.locator(".card-body b");
     this.cart = page.locator("[routerlink*='cart']");
     this.orders = page.locator("button[routerlink*='myorders']");
@@ -10,9 +9,10 @@ class CartPage {
   }
 
   async VerifyProductIsDisplayed(productName) {
-    await this.cartProducts.waitFor();
-    const bool = await this.getProductLocator(productName).isVisible();
-    expect(bool).toBeTruthy();
+    // Cart line items use headings — not generic div li (empty cart / nav break that selector).
+    await expect(this.getProductLocator(productName)).toBeVisible({
+      timeout: 20_000,
+    });
   }
 
   async Checkout() {

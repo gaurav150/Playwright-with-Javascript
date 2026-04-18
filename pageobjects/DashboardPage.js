@@ -13,13 +13,21 @@ class DashboardPage {
     console.log(allTitles);
     const count = await this.products.count();
     console.log("count is -> " + count);
+    let added = false;
     for (let i = 0; i < count; ++i) {
-      if (
-        (await this.products.nth(i).locator("b").textContent()) === productName
-      ) {
-        await this.products.nth(i).locator("text= Add To Cart").click();
+      const title =
+        (await this.products.nth(i).locator("b").textContent()) ?? "";
+      if (title.trim() === productName) {
+        await this.products
+          .nth(i)
+          .getByRole("button", { name: /add to cart/i })
+          .click();
+        added = true;
         break;
       }
+    }
+    if (!added) {
+      throw new Error(`Product "${productName}" not found on dashboard`);
     }
   }
 

@@ -56,43 +56,39 @@ test("Logging in with existing credentials", async ({ page }) => {
   await password.fill("");
   await password.fill("Abhishek@123");
   await loginBtn.click();
-  await page.waitForLoadState("networkidle"); // Wait for the page to load completely
-  await page.locator(".card-body b").first().waitFor(); // Wait for the first card to be visible
+  await expect(page.getByRole("button", { name: "Sign Out" })).toBeVisible();
+  await expect(products.first()).toBeVisible();
   const allTitles = await page.locator(".card-body b").allTextContents();
   console.log(allTitles);
   const count = await products.count();
   console.log("count is -> " + count);
+  let addedToCart = false;
   for (let i = 0; i < count; ++i) {
-    if ((await products.nth(i).locator("b").textContent()) === productName) {
-      await products.nth(i).locator("text= Add To Cart").click();
+    const title = (await products.nth(i).locator("b").textContent()) ?? "";
+    if (title.trim() === productName) {
+      await products.nth(i).getByRole("button", { name: "Add To Cart" }).click();
+      addedToCart = true;
       break;
     }
   }
+  expect(addedToCart, `Product "${productName}" not found on shop page`).toBe(true);
   await cartButton.click();
-  await page.locator("div li").first().waitFor();
-  const bool = await page.locator("h3:has-text('ZARA COAT 3')").isVisible();
-  expect(bool).toBeTruthy();
+  // Wait for cart line item — not generic div li (nav/cart-empty layouts break that selector).
+  await expect(page.locator("h3", { hasText: productName })).toBeVisible({
+    timeout: 20_000,
+  });
   await page.locator("text=Checkout").click();
   await monthDropdown.selectOption("12");
   await dateDropdown.selectOption("20");
   await page
     .locator("input[placeholder='Select Country']")
-    .pressSequentially("ind");
-  const options = page.locator(".ta-results");
-  await options.waitFor();
-  const countryOptions = await options.locator("button").allTextContents();
-  console.log(countryOptions);
-  const optionCount = await options.locator("button").count();
-  for (let i = 0; i < optionCount; ++i) {
-    const text = await options.locator("button").nth(i).textContent();
-    if (text.trim() === "India") {
-      await options.locator("button").nth(i).click();
-      break;
-    }
-  }
+    .pressSequentially("ind", { delay: 50 });
+  const indiaOption = page.locator(".ta-results button", { hasText: "India" }).first();
+  await expect(indiaOption).toBeVisible({ timeout: 20_000 });
+  await indiaOption.click();
   const userEmail = await page.locator(".user__name label").textContent();
   console.log("Email is -> " + userEmail.trim());
-  expect(userEmail).toBe("abhishek03.sharma@example.com");
+  expect(userEmail.trim()).toBe("abhishek03.sharma@example.com");
   await page.locator(".actions a.btnn").click();
   const headerText = await page.locator("h1").textContent();
   console.log("Header text is -> " + headerText.trim());
@@ -104,7 +100,7 @@ test("Logging in with existing credentials", async ({ page }) => {
   console.log("Order ID is -> " + cleanedOrderId);
 
   await page.locator("button[routerlink*='myorders']").click();
-  await page.locator("tbody").waitFor();
+  await expect(page.locator("tbody")).toBeVisible({ timeout: 20_000 });
   const rows = page.locator("tbody tr");
 
   for (let i = 0; i < (await rows.count()); ++i) {
