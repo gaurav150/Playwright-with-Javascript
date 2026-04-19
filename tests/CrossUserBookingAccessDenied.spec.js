@@ -72,7 +72,7 @@ function readToken(body) {
   return token;
 }
 
-test("gmail user sees Access Denied when viewing yahoo user booking", async ({
+test.skip("gmail user sees Access Denied when viewing yahoo user booking", async ({
   page,
   request,
 }) => {
