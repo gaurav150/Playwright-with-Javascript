@@ -45,7 +45,7 @@ async function readExcel(worksheet, searchText) {
   return output;
 }
 
-test.skip("Upload and Download file test", async ({ page }) => {
+test("Upload and Download file test", async ({ page }) => {
   const textSearch = "Mango";
   const updatedValue = 350;
   await page.goto(
